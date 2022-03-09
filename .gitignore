@@ -2,7 +2,7 @@
 # torch weights file
 *.pth
 
-
+weights/*
 weights/checkpoints/*
 !weights/checkpoints/.gitkeep
 weights/results/*
