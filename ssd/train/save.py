@@ -4,7 +4,7 @@ import os, logging, re, torch
 import matplotlib.pyplot as plt
 
 class SaveManager(object):
-    def __init__(self, modelname, interval, max_checkpoints, plot_yrange=(0, 14), savedir='./weights/demo/0'):
+    def __init__(self, modelname, interval, max_checkpoints, plot_yrange=(0, 14), savedir='./weights'):
         """
         :param modelname: str, saved model name.
         :param interval: int, save for each designated iteration

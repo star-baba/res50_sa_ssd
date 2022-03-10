@@ -6,11 +6,8 @@ import numpy as np
 from .base import ObjectDetectionDatasetBase, Compose
 from .._utils import DATA_ROOT, _get_xml_et_value, _check_ins
 
-VOC_class_labels = ['aeroplane', 'bicycle', 'bird', 'boat',
-    'bottle', 'bus', 'car', 'cat', 'chair',
-    'cow', 'diningtable', 'dog', 'horse',
-    'motorbike', 'person', 'pottedplant',
-    'sheep', 'sofa', 'train', 'tvmonitor']
+VOC_class_labels = ['lymph_node']
+
 VOC_class_nums = len(VOC_class_labels)
 
 VOC2007_ROOT = os.path.join(DATA_ROOT, 'voc/voc2007/trainval/VOCdevkit/VOC2007')
@@ -39,7 +36,7 @@ class VOCSingleDatasetBase(ObjectDetectionDatasetBase):
             with open(layouttxt_path, 'r') as f:
                 filenames = f.read().splitlines()
                 filenames = [filename.split()[0] for filename in filenames]
-                self._annopaths = [os.path.join(self._voc_dir, 'Annotations', '{}.xml'.format(filename)) for filename in filenames]
+                self._annopaths = [os.path.join(self._voc_dir, 'Annotations', '{}.xml'.format(os.path.splitext(filename)[0])) for filename in filenames]
         else:
             raise FileNotFoundError('layout: {} was invalid arguments'.format(focus))
 
@@ -94,7 +91,7 @@ class VOCSingleDatasetBase(ObjectDetectionDatasetBase):
             bndbox = obj.find('bndbox')
 
             # bbox = [xmin, ymin, xmax, ymax]
-            bboxes.append([_get_xml_et_value(bndbox, 'xmin', int), _get_xml_et_value(bndbox, 'ymin', int), _get_xml_et_value(bndbox, 'xmax', int), _get_xml_et_value(bndbox, 'ymax', int)])
+            bboxes.append([_get_xml_et_value(bndbox, 'xmin', float), _get_xml_et_value(bndbox, 'ymin', float), _get_xml_et_value(bndbox, 'xmax', float), _get_xml_et_value(bndbox, 'ymax', float)])
 
             flags.append({'difficult': _get_xml_et_value(obj, 'difficult', int) == 1,
                           'truncated': _get_xml_et_value(obj, 'truncated', int) == 1,
@@ -170,4 +167,7 @@ class VOC2012_TestDataset(VOCSingleDatasetBase):
         super().__init__(DATA_ROOT + '/voc/voc2012/test/VOCdevkit/VOC2012',
                          focus='test', **kwargs)
 
+class Custom_TrainDataset(VOCSingleDatasetBase):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 

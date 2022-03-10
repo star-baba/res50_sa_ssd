@@ -17,7 +17,7 @@ from torch.optim.adam import Adam
 import tensorboardX as tbx
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataset_dir', default='/shuffle_custom09',type=str)
+parser.add_argument('--dataset_dir', default='/shuffle_custom',type=str)
 parser.add_argument('--focus', type= str)
 parser.add_argument('--save_dir', type=str)
 
@@ -26,7 +26,7 @@ args = parser.parse_args()
 augmentation = augmentations.AugmentationOriginal()
 
 transform = transforms.Compose(
-    [transforms.Resize((224, 224)),
+    [transforms.Resize((300, 300)),
      transforms.ToTensor(),
      transforms.Normalize(rgb_means=(0.485, 0.456, 0.406), rgb_stds=(0.229, 0.224, 0.225))]
 )
