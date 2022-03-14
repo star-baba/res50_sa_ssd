@@ -13,8 +13,10 @@ Spatial Attention Module
 
 Add Spatial Attention to SSD Extra Layers.
 
+SSD
 ![def_ssd img](assets/def_ssd.png?raw=true "def_ssd img")
 
+Res50 SA SSD
 ![res50_sa_ssd img](assets/res50_sa_ssd.png?raw=true "res50_sa_ssd img")
 
 <!-- # TODO
@@ -352,12 +354,12 @@ $$
 
   where $s_{min}=0.2, s_{max}=0.9$.
 -->
-
+<!-- 
 - Encode in [codec.py](https://github.com/jjjkkkjjj/pytorch_SSD/blob/master/ssd/core/boxes/codec.py)
 
   ![encode](https://user-images.githubusercontent.com/16914891/80902084-f6733e00-8d4c-11ea-822c-b4fbf1f7410d.png)
 
-  where ![norm](https://user-images.githubusercontent.com/16914891/80902089-f70bd480-8d4c-11ea-93d3-73392193a07b.png).
+  where ![norm](https://user-images.githubusercontent.com/16914891/80902089-f70bd480-8d4c-11ea-93d3-73392193a07b.png). -->
 
 <!--
 $$
@@ -370,11 +372,11 @@ $$
   where $\bf{\mu}=(\mu^{cx},\mu^{cy},\mu^{w},\mu^{h})=(0,0,0,0),\bf{\sigma}=(\sigma^{cx},\sigma^{cy},\sigma^{w},\sigma^{h})=(0.1,0.1,0.2,0.2)$.
 -->
 
-- Decode in [codec.py](https://github.com/jjjkkkjjj/pytorch_SSD/blob/master/ssd/core/boxes/codec.py)
+<!-- - Decode in [codec.py](https://github.com/jjjkkkjjj/pytorch_SSD/blob/master/ssd/core/boxes/codec.py)
 
   ![decode](https://user-images.githubusercontent.com/16914891/80902094-f70bd480-8d4c-11ea-940e-ab70248c3d5e.png)
 
-  where ![norm](https://user-images.githubusercontent.com/16914891/80902089-f70bd480-8d4c-11ea-93d3-73392193a07b.png).
+  where ![norm](https://user-images.githubusercontent.com/16914891/80902089-f70bd480-8d4c-11ea-93d3-73392193a07b.png). -->
 
 <!--
 $$
@@ -387,4 +389,4 @@ $$
   where $\bf{\mu}=(\mu^{cx},\mu^{cy},\mu^{w},\mu^{h})=(0,0,0,0),\bf{\sigma}=(\sigma^{cx},\sigma^{cy},\sigma^{w},\sigma^{h})=(0.1,0.1,0.2,0.2)$.
 -->
 
--  -->
+<!-- -  --> -->
