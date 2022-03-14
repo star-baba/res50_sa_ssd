@@ -69,20 +69,30 @@ class SSD300(SSDvggBase):
             *Conv2d.relu_one('6', 512, 1024, kernel_size=(3, 3), padding=6, dilation=6),
 
             *Conv2d.relu_one('7', 1024, 1024, kernel_size=(1, 1)),
+
+            *Conv2d.spatial_attention('7', 1024, 1024),
         ]
 
         extra_layers = [
             *Conv2d.relu_one('8_1', 1024, 256, kernel_size=(1, 1)),
             *Conv2d.relu_one('8_2', 256, 512, kernel_size=(3, 3), stride=(2, 2), padding=1),
 
+            *Conv2d.spatial_attention('8',512, 512),
+
             *Conv2d.relu_one('9_1', 512, 128, kernel_size=(1, 1)),
             *Conv2d.relu_one('9_2', 128, 256, kernel_size=(3, 3), stride=(2, 2), padding=1),
+
+            *Conv2d.spatial_attention('9', 256, 256),
 
             *Conv2d.relu_one('10_1', 256, 128, kernel_size=(1, 1)),
             *Conv2d.relu_one('10_2', 128, 256, kernel_size=(3, 3)),
 
+            *Conv2d.spatial_attention('10', 256, 256),
+
             *Conv2d.relu_one('11_1', 256, 128, kernel_size=(1, 1)),
             *Conv2d.relu_one('11_2', 128, 256, kernel_size=(3, 3), batch_norm=False),
+
+            *Conv2d.spatial_attention('11', 256, 256),
             # if batch_norm = True, error is thrown. last layer's channel == 1 may be caused
         ]
         # vgg_layers = nn.ModuleDict(vgg_layers)
