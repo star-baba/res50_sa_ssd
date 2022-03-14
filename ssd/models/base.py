@@ -438,7 +438,8 @@ class SSDvggBase(SSDBase):
         :param predictor: Predictor, if it's None, use default Predictor
         :param inferenceBox: InferenceBox, if it's None, use default InferenceBox
         """
-        self._vgg_index = -1
+        # self._vgg_index = -1
+        self._res50_index = -1
 
         super().__init__(train_config, val_config, defaultBox,
                          codec=codec, predictor=predictor, inferenceBox=inferenceBox, **build_kwargs)
@@ -449,14 +450,19 @@ class SSDvggBase(SSDBase):
         :param extra_layers: nn.ModuleDict
         :return:
         """
-        vgg_layers = kwargs.get('vgg_layers')
+        # vgg_layers = kwargs.get('vgg_layers')
+        res50_layers = kwargs.get('res50_layers')
         extra_layers = kwargs.get('extra_layers')
 
         feature_layers = []
-        vgg_layers = _check_ins('vgg_layers', vgg_layers, nn.ModuleDict)
-        for name, module in vgg_layers.items():
+        # vgg_layers = _check_ins('vgg_layers', vgg_layers, nn.ModuleDict)
+        res50_layers = _check_ins('res50_layers', res50_layers, nn.ModuleDict)
+        # for name, module in vgg_layers.items():
+        #     feature_layers += [(name, module)]
+        for name, module in res50_layers.items():
             feature_layers += [(name, module)]
-        self._vgg_index = len(feature_layers)
+        # self._vgg_index = len(feature_layers)
+        self._res50_index = len(feature_layers)
 
         extra_layers = _check_ins('extra_layers', extra_layers, nn.ModuleDict)
         for name, module in extra_layers.items():
@@ -466,15 +472,37 @@ class SSDvggBase(SSDBase):
 
     def build_addon(self, **kwargs):
         addon_layers = []
+        # for i, name in enumerate(self.addon_source_names):
+        #     addon_layers += [
+        #         ('addon_{}'.format(i + 1), L2Normalization(self.feature_layers[name].out_channels, gamma=20))
+        #     ]
+        # self.addon_layers = nn.ModuleDict(addon_layers)
+
         for i, name in enumerate(self.addon_source_names):
-            addon_layers += [
-                ('addon_{}'.format(i + 1), L2Normalization(self.feature_layers[name].out_channels, gamma=20))
-            ]
+            # print(self.addon_source_names)
+            if "layer" in name:
+                addon_layers += [
+                ('addon_{}'.format(i + 1), L2Normalization(self.feature_layers[name][0].conv3.out_channels, gamma=20))
+                ]
+            else:
+                addon_layers += [
+                    ('addon_{}'.format(i + 1), L2Normalization(self.feature_layers[name].out_channels, gamma=20))
+                ]
         self.addon_layers = nn.ModuleDict(addon_layers)
+
 
     def build_classifier(self, **kwargs):
         # loc and conf layers
-        in_channels = tuple(self.feature_layers[name].out_channels for name in self.classifier_source_names)
+        # in_channels = tuple(self.feature_layers[name].out_channels for name in self.classifier_source_names)
+
+        in_channel_list = []
+        for name in self.classifier_source_names:
+            if "layer" in name:
+                in_channel_list += [self.feature_layers[name][0].conv3.out_channels]
+            else:
+                in_channel_list += [self.feature_layers[name].out_channels]
+
+        in_channels = tuple(in_channel_list)
 
         _dbox_num_per_fpixel = [len(aspect_ratio) * 2 for aspect_ratio in self.aspect_ratios]
         # loc

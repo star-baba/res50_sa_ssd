@@ -3,6 +3,7 @@ import torch
 from torch.nn import init
 from torch.nn import functional as F
 import numpy as np
+from torchvision.models.resnet import Bottleneck, resnet101, resnet50
 
 from collections import OrderedDict
 
@@ -30,6 +31,29 @@ class L2Normalization(nn.Module):
         # normalize (x^)
         x = F.normalize(x, p=2, dim=1)
         return self.scales.unsqueeze(0).unsqueeze(2).unsqueeze(3) * x
+
+res50 = resnet50(pretrained=True)
+res50.to('cuda:0')
+
+class ResNet_First(nn.Module):
+    def __init__(self, in_channels, out_channels, relu_inplace=True):
+        super().__init__()
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+
+        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size = (7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+        self.relu = nn.ReLU(relu_inplace)
+        self.bn = nn.BatchNorm2d(out_channels, eps=1e-05, momentum=0.1,
+                                 affine=True, track_running_stats=True)
+        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+
+    def forward(self, x):
+        x = self.conv(x)
+        x = self.bn(x)
+        x = self.relu(x)
+        x = self.maxpool(x)
+
+        return x
 
 
 class ConvRelu(nn.Module):
@@ -191,3 +215,45 @@ class Conv2d:
                 ('conv{}'.format(postfix), nn.Conv2d(in_channels, out_channels, **kwargs)),
                 ('bn{}'.format(postfix), nn.BatchNorm2d(out_channels))
             ]
+
+
+    @staticmethod
+    def res_first(in_channels, out_channels):
+
+        layers = []
+
+        layers += [
+            ('layer_0', ResNet_First(in_channels, out_channels))
+        ]
+
+        return layers
+
+    @staticmethod
+    def res_layer(order):
+
+        layers = []
+
+        if order == 1:
+            res_layer = res50.layer1
+        elif order == 2:
+            res_layer = res50.layer2
+        elif order == 3:
+            res_layer = res50.layer3
+        else :
+            res_layer = res50.layer4
+
+        layers += [
+            ('layer{}'.format(order), res_layer)
+        ]
+
+        return layers
+
+    @staticmethod
+    def channel_same(in_channels, out_channels):
+
+        layers = []
+        layers += [
+            ('channel_same', nn.Conv2d(in_channels, out_channels, kernel_size=(1, 1), padding=(6, 6)))
+        ]
+
+        return layers

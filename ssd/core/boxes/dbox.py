@@ -75,14 +75,18 @@ class DefaultBoxBase(nn.Module):
         assert len(classifier_source_names) == self.fmap_num and len(localization_layers) == self.fmap_num, 'must be same length'
 
         # this x is pseudo Tensor to get feature's map size
-        x = torch.tensor((), dtype=torch.float, requires_grad=False).new_zeros((1, self.img_channels, self.img_height, self.img_width))
+        # x = torch.tensor((), dtype=torch.float, requires_grad=False).new_zeros((1, self.img_channels, self.img_height, self.img_width))
+        x = torch.tensor((), dtype=torch.float, requires_grad=False, device=torch.device('cuda:0')).new_zeros((1, self.img_channels, self.img_height, self.img_width))
 
         i = 0
         for name, layer in feature_layers.items():
+
+            layer.to(torch.device('cuda:0'))
             x = layer(x)
             # get features by feature map convolution
             if name in classifier_source_names:
-                feature = localization_layers['conv_loc_{0}'.format(i + 1)](x)
+                loc_layer = localization_layers['conv_loc_{0}'.format(i + 1)].to(torch.device('cuda:0'))
+                feature = loc_layer(x)
                 _, _, h, w = feature.shape
                 self.fmap_sizes += [[h, w]]
                 dbox = len(self.aspect_ratios[i]) * 2
