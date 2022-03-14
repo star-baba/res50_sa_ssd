@@ -55,6 +55,23 @@ class ResNet_First(nn.Module):
 
         return x
 
+class SELayer(nn.Module):
+    def __init__(self, channel, reduction=16):
+        super(SELayer, self).__init__()
+        self.avg_pool = nn.AdaptiveAvgPool2d(1)
+        self.fc = nn.Sequential(
+            nn.Linear(channel, channel // reduction, bias=False),
+            nn.ReLU(inplace=True),
+            nn.Linear(channel // reduction, channel, bias=False),
+            nn.Sigmoid()
+        )
+
+    def forward(self, x):
+        b, c, _, _ = x.size()
+        y = self.avg_pool(x).view(b, c)
+        y = self.fc(y).view(b, c, 1, 1)
+        return x * y.expand_as(x)
+
 
 class ConvRelu(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, bn=False, relu_inplace=True, **kwargs):
@@ -254,6 +271,17 @@ class Conv2d:
         layers = []
         layers += [
             ('channel_same', nn.Conv2d(in_channels, out_channels, kernel_size=(1, 1), padding=(6, 6)))
+        ]
+
+        return layers
+
+    @staticmethod
+    def se_block(order, in_channels, out_channels, **kwargs):
+
+        layers = []
+
+        layers += [
+            ('se_block{}'.format(order), SELayer(in_channels))
         ]
 
         return layers
