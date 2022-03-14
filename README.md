@@ -1,11 +1,25 @@
-# PyTorch SSD
+<!-- # PyTorch SSD
 The implementation of SSD (Single shot detector) in PyTorch.
 
 ![result img](assets/coco_testimg-result.jpg?raw=true "result img")
 
-![result2 img](assets/coco_testimg-result2.jpg?raw=true "result2 img")
+![result2 img](assets/coco_testimg-result2.jpg?raw=true "result2 img") -->
 
-# TODO
+# Add SE Block
+SE_Block
+
+![se_block img](assets/SE_block.png?raw=true "se_block img")
+
+
+Add SE Block to SSD Extra Layers.
+
+SSD
+![def_ssd img](assets/def_ssd.png?raw=true "def_ssd img")
+
+Res50 SE SSD
+![res50_se_ssd img](assets/res50_se_ssd.png?raw=true "res50_se_ssd img")
+
+<!-- # TODO
 
 - [x] Implement SSD300
 - [x] Implement SSD300 with batch normalization
@@ -341,11 +355,11 @@ $$
   where $s_{min}=0.2, s_{max}=0.9$.
 -->
 
-- Encode in [codec.py](https://github.com/jjjkkkjjj/pytorch_SSD/blob/master/ssd/core/boxes/codec.py)
+<!-- - Encode in [codec.py](https://github.com/jjjkkkjjj/pytorch_SSD/blob/master/ssd/core/boxes/codec.py)
 
   ![encode](https://user-images.githubusercontent.com/16914891/80902084-f6733e00-8d4c-11ea-822c-b4fbf1f7410d.png)
 
-  where ![norm](https://user-images.githubusercontent.com/16914891/80902089-f70bd480-8d4c-11ea-93d3-73392193a07b.png).
+  where ![norm](https://user-images.githubusercontent.com/16914891/80902089-f70bd480-8d4c-11ea-93d3-73392193a07b.png). -->
 
 <!--
 $$
@@ -358,11 +372,11 @@ $$
   where $\bf{\mu}=(\mu^{cx},\mu^{cy},\mu^{w},\mu^{h})=(0,0,0,0),\bf{\sigma}=(\sigma^{cx},\sigma^{cy},\sigma^{w},\sigma^{h})=(0.1,0.1,0.2,0.2)$.
 -->
 
-- Decode in [codec.py](https://github.com/jjjkkkjjj/pytorch_SSD/blob/master/ssd/core/boxes/codec.py)
+<!-- - Decode in [codec.py](https://github.com/jjjkkkjjj/pytorch_SSD/blob/master/ssd/core/boxes/codec.py)
 
   ![decode](https://user-images.githubusercontent.com/16914891/80902094-f70bd480-8d4c-11ea-940e-ab70248c3d5e.png)
 
-  where ![norm](https://user-images.githubusercontent.com/16914891/80902089-f70bd480-8d4c-11ea-93d3-73392193a07b.png).
+  where ![norm](https://user-images.githubusercontent.com/16914891/80902089-f70bd480-8d4c-11ea-93d3-73392193a07b.png). -->
 
 <!--
 $$
@@ -375,4 +389,4 @@ $$
   where $\bf{\mu}=(\mu^{cx},\mu^{cy},\mu^{w},\mu^{h})=(0,0,0,0),\bf{\sigma}=(\sigma^{cx},\sigma^{cy},\sigma^{w},\sigma^{h})=(0.1,0.1,0.2,0.2)$.
 -->
 
-- 
+<!-- -  --> -->
