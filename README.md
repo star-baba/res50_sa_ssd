@@ -1,11 +1,23 @@
-# PyTorch SSD
+<!-- # PyTorch SSD
 The implementation of SSD (Single shot detector) in PyTorch.
 
 ![result img](assets/coco_testimg-result.jpg?raw=true "result img")
 
-![result2 img](assets/coco_testimg-result2.jpg?raw=true "result2 img")
+![result2 img](assets/coco_testimg-result2.jpg?raw=true "result2 img") -->
 
-# TODO
+# Add Spatial Attention
+Spatial Attention Module
+
+![spatial_attention img](assets/spatial_attention.png?raw=true "spatial_attention img")
+
+
+Add Spatial Attention to SSD Extra Layers.
+
+![def_ssd img](assets/def_ssd.png?raw=true "def_ssd img")
+
+![res50_sa_ssd img](assets/res50_sa_ssd.png?raw=true "res50_sa_ssd img")
+
+<!-- # TODO
 
 - [x] Implement SSD300
 - [x] Implement SSD300 with batch normalization
@@ -375,4 +387,4 @@ $$
   where $\bf{\mu}=(\mu^{cx},\mu^{cy},\mu^{w},\mu^{h})=(0,0,0,0),\bf{\sigma}=(\sigma^{cx},\sigma^{cy},\sigma^{w},\sigma^{h})=(0.1,0.1,0.2,0.2)$.
 -->
 
-- 
+-  -->
