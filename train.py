@@ -38,7 +38,7 @@ target_transform = target_transforms.Compose(
 # train_dataset = datasets.VOC2007_TrainValDataset(ignore=target_transforms.Ignore(difficult=True), transform=transform, target_transform=target_transform, augmentation=augmentation)
 # train_dataset = datasets.Custom_TrainDataset(ignore=target_transforms.Ignore(difficult=True), transform=transform, target_transform=target_transform, augmentation=augmentation)
 train_dataset = datasets.Custom_TrainDataset(ignore=target_transforms.Ignore(difficult=True), transform=transform, target_transform=target_transform, augmentation=augmentation,
-                                             voc_dir=DATA_ROOT + '/shuffle_custom', focus=args.focus
+                                             voc_dir=DATA_ROOT + args.dataset_dir, focus=args.focus
                                              )
 
 train_loader = DataLoader(train_dataset,
@@ -63,9 +63,9 @@ iter_sheduler = SSDIterMultiStepLR(optimizer, milestones=(40000, 50000), gamma=0
 
 #save_manager = SaveManager(modelname='ssd300-voc2007++', interval=10, max_checkpoints=15, plot_yrange=(0, 8))#5000
 # save_manager = SaveManager(modelname='ssd300-custom612', interval=4000, max_checkpoints=15, plot_yrange=(0, 8), savedir='./weights/res50pre1')
-save_manager = SaveManager(modelname='ssd300-custom', interval=4000, max_checkpoints=15, plot_yrange=(0, 8), savedir=args.save_dir)
+save_manager = SaveManager(modelname='ssd300-custom', interval=5000, max_checkpoints=15, plot_yrange=(0, 8), savedir=args.save_dir)
 log_manager = LogManager(interval=10, save_manager=save_manager, loss_interval=10, live_graph=LiveGraph((0, 8)))
 trainer = TrainLogger(model, loss_func=SSDLoss(), optimizer=optimizer, scheduler=iter_sheduler, log_manager=log_manager)
 
 #trainer.train(70, train_loader)
-trainer.train(7000, train_loader)
+trainer.train(43000, train_loader)
